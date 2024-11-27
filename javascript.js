@@ -1,5 +1,9 @@
+// Variables to store Container and it's empty Clone for setbacks
+const container = document.querySelector(".container");
+const clone = container.cloneNode(true);
+
+//Function to create a grid of suqares for the sketchpad
 function createGrid(numOfSquares) {
-    const container = document.querySelector(".container");
 
     for (let i = 1; i <= numOfSquares; i++) {
         const row = document.createElement("div");
@@ -17,5 +21,11 @@ function createGrid(numOfSquares) {
         }
     } //end function createSquares
 } // end function createGrid
+
+//Function to empty the container before populating it again
+function clearContainer() {
+    container.replaceWith(clone);
+}
+
 
 createGrid(16);
