@@ -9,12 +9,13 @@ const newGridButton = document.querySelector("#new-grid");
 eraseDrawingButton.addEventListener("click", eraseDrawing);
 newGridButton.addEventListener("click", () => {
     let numOfSquares = parseInt(prompt("How many squares would you like? Put in a number between 1 and 100.", 16));
-    if ((numOfSquares <= 100) && (numOfSquares > 10)) {
-        createGrid(numOfSquares);
+    if ((numOfSquares <= 100) && (numOfSquares > 0)) {
+        numOfSquares = numOfSquares;
     } else {
         alert("Error, you put in a invalid number. Please put in a number between 1 and 100.");
-        numOfSquares = parseInt(prompt("How many squares would you like? Put in a number between 1 and 100.", 16));
+        numOfSquares = parseInt(prompt("How many squares would you like? Put in a number between 1 and 100.", 16)); 
     }
+    createGrid(numOfSquares);
 });
 
 //Function to create a grid of suqares for the sketchpad
@@ -52,7 +53,8 @@ function createGrid(numOfSquares) {
 function eraseDrawing() {
     const squares = document.querySelectorAll(".square");
     squares.forEach((square) => {
-        square.style.backgroundColor = "white";
+        square.style.removeProperty('background-color');
+        square.style.removeProperty('opacity');
     });
 }
 
@@ -63,7 +65,27 @@ function addListenersToSquares() {
     //EventListener for Hovering the Squares
     squares.forEach((square) => {
         square.addEventListener("mouseenter", () => {
-            square.style.backgroundColor = "black";
+            let currentOpacity = square.style.opacity;
+            square.style.backgroundColor = randomRGB();
+            
+            if(currentOpacity >= 1) {
+                square.style.opacity = 1
+            } else if (currentOpacity) {
+                square.style.opacity = Number(currentOpacity) + 0.1
+            }
+            else {
+                square.style.opacity = 0.1;
+            }
         });
     });
 }
+
+//Function to get a Random RGB (https://stackoverflow.com/questions/23095637/how-do-you-get-random-rgb-in-javascript)
+function randomRGB() {
+const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+const r = randomBetween(0, 255);
+const g = randomBetween(0, 255);
+const b = randomBetween(0, 255);
+const rgb = `rgb(${r},${g},${b})`; // Collect all to a css color string
+return rgb;
+};
